@@ -16,16 +16,16 @@ const useFetch = (url) => {
 				}
 				return response.json()
 			}).then(data => {
+				setIsFetching(false);
 				setError('');
 				setData(data);
 			}).catch(error => {
 				// if fetch is not aborted
 				if(error && error.name !== 'AbortError'){
+					setIsFetching(false);
 					setError(error.message);
 				}
-			}).finally(() => {
-				setIsFetching(false);
-			});
+			})
 		},1000);
 
 		return function cleanup(){

@@ -1,10 +1,7 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import Navbar from './components/Navbar';
-import Home from './views/Home';
-import Create from './views/Create';
-import PostDetails from './views/PostDetails';
-import NotFound from './views/404';
+import routes from './routes';
 
 function App() {
 	return (
@@ -13,18 +10,17 @@ function App() {
 				<Navbar/>
 				<div className="content">
 					<Switch>
-						<Route exact path="/">
-							<Home/>
-						</Route>
-						<Route path="/create">
-							<Create/>
-						</Route>
-						<Route path="/post/:id">
-							<PostDetails/>
-						</Route>
-						<Route path="*">
-							<NotFound/>
-						</Route>
+						{routes.map((route, i) => (
+							<Route
+								key={i}
+								path={route.path}
+								exact={route.exact}
+								render={props => (
+									// pass the sub-routes down to keep nesting
+									<route.component {...props} routes={route.routes} />
+								)}
+							/>
+						))}
 					</Switch>
 				</div>
 			</div>
